@@ -47,6 +47,7 @@ let shortCommitHash = GitHelper.gitCommand("git log -1 --pretty=\"%h\"")
 let shortSubject = GitHelper.gitCommand("git log -1 --pretty=\"%s\"")
 let branchName = GitHelper.gitCommand("git rev-parse --abbrev-ref HEAD")
 let timestamp = GitHelper.gitCommand("git log -1 --pretty=\"%ct\"")
+let changes = GitHelper.gitCommand("git status --porcelain -uno")
 
 let content = """
 struct GitCommitInfo {
@@ -69,6 +70,10 @@ struct GitCommitInfo {
 
     static var unixTimestamp: Double {
         \(timestamp)
+    }
+
+    static var isDirty: Double {
+        \(changes.count > 0)
     }
 }
 """
